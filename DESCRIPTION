@@ -1,0 +1,23 @@
+Package: EunomiaExploration
+Title: Exploration of the Eunomia dataset
+Version: 0.0.1
+Authors@R: 
+    person("Ger", "Inberg", , "info@gerinberg.com", role = c("aut", "cre"))
+Description: Exploration of the Eunomia dataset.
+License: GPL (>= 3)
+Depends:
+    Eunomia,
+    DatabaseConnector,
+    shinydashboard,
+    shiny,
+    dplyr,
+    magrittr,
+    lubridate,
+    ggplot2,
+    plotly
+Suggests:
+    roxygen2,
+    testthat (>= 3.0.0)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2

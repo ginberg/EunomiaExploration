@@ -23,6 +23,10 @@
 #'
 #' @export
 extractPatients <- function(dbConnection) {
+  if (is.null(dbConnection) || suppressWarnings(is.na(dbConnection)) || class(dbConnection) != "DatabaseConnectorDbiConnection") {
+    stop("Please provide a database connection as input")
+  }
+
   querySql(dbConnection, "SELECT PERSON_ID, CONDITION_CONCEPT_ID, CONCEPT_NAME, CONDITION_START_DATE, CONDITION_END_DATE
                           FROM CONDITION_OCCURRENCE
                           LEFT JOIN CONCEPT ON CONDITION_OCCURRENCE.CONDITION_CONCEPT_ID = CONCEPT.CONCEPT_ID")  %>%

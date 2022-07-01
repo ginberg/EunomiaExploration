@@ -22,20 +22,7 @@
 #'
 #' @export
 plotTrend <- function(data, byMonth = FALSE) {
-  if (byMonth) {
-    data <- data  %>%
-      mutate(Time = floor_date(ConditionStartDate, unit = "month")) %>%
-      distinct(PersonId, ConditionName, Time, .keep_all = TRUE) %>%
-      group_by(ConditionName, Time) %>%
-      summarise(NumberOfPatients = n())
-  } else {
-    data <- data  %>%
-      mutate(Time = floor_date(ConditionStartDate, unit = "year")) %>%
-      distinct(PersonId, ConditionName, Time, .keep_all = TRUE) %>%
-      group_by(ConditionName, Time) %>%
-      summarise(NumberOfPatients = n())
-  }
-
+  data <- createPlotData(data, byMonth)
   conditions <- unique(data$ConditionName)
   conditions_length <- length(conditions)
 
@@ -56,4 +43,60 @@ plotTrend <- function(data, byMonth = FALSE) {
       facet_wrap(~ConditionName)
   }
   ggplotly(plot)
+}
+
+
+#' Creates the plot data.
+#'
+#' @description
+#' Creates the data for the plotTrend function.
+#'
+#' @param data a dataset returned from EunomiaExploration::extractPatients
+#' @param byMonth Boolean indicating if the time scale is by month or per year (default)
+#'
+#' @import dplyr
+#'
+#' @return
+#' A data frame with the plot data.
+#'
+#' @examples
+#' connectionDetails <- getEunomiaConnectionDetails()
+#'
+#' dbConnection <- connect(connectionDetails)
+#' df <- extractPatients(dbConnection)
+#' disconnect(dbConnection)
+#' createPlotData(df)
+#'
+createPlotData <- function(data, byMonth = FALSE) {
+  if (byMonth) {
+    data <- data  %>%
+      mutate(Time = floor_date(ConditionStartDate, unit = "month")) %>%
+      mutate(EndTime = floor_date(ConditionEndDate, unit = "month")) %>%
+      distinct(PersonId, ConditionName, Time, .keep_all = TRUE) %>%
+      mutate(Ntimes = as.numeric(1 + interval(Time, EndTime) %/% months(1))) %>%
+      select(-EndTime)
+  } else {
+    data <- data  %>%
+      mutate(Time = floor_date(ConditionStartDate, unit = "year")) %>%
+      mutate(EndTime = floor_date(ConditionEndDate, unit = "year")) %>%
+      distinct(PersonId, ConditionName, Time, .keep_all = TRUE) %>%
+      mutate(Ntimes = as.numeric(1 + interval(Time, EndTime) %/% years(1))) %>%
+      select(-EndTime)
+  }
+
+  df_single <- data %>% filter(Ntimes == 1) %>% select(-Ntimes)
+  df_multi  <-  data %>% filter(Ntimes > 1)
+  ntimes    <- df_multi$Ntimes
+  plusTime  <- unlist(lapply(ntimes, function(x) seq(0,x-1)))
+  df_multi  <- as.data.frame(lapply(df_multi %>% select(-Ntimes), rep, ntimes))
+
+  if (byMonth) {
+    df_multi <- df_multi %>% mutate(Time = Time %m+% months(plusTime))
+  } else {
+    df_multi <- df_multi %>% mutate(Time = Time %m+% years(plusTime))
+  }
+
+  rbind(df_single, df_multi) %>%
+    group_by(ConditionName, Time) %>%
+    summarise(NumberOfPatients = n(), .groups = "drop")
 }

@@ -31,8 +31,11 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
       - name: Install dependencies
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          install.packages(c("remotes", "rcmdcheck"))
+          install.packages(c("remotes", "rcmdcheck", "checkmate"))
+          remotes::install_github("OHDSI/Eunomia")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
       - name: Check

@@ -5,14 +5,15 @@ Authors@R:
     person("Ger", "Inberg", , "info@gerinberg.com", role = c("aut", "cre"))
 Description: Exploration of the Eunomia dataset.
 License: GPL (>= 3)
-Depends:
+Imports:
     Eunomia,
     DatabaseConnector,
-    shinydashboard,
-    shiny,
+    SqlRender,
     dplyr,
     magrittr,
     lubridate,
+    shiny,
+    shinydashboard,
     ggplot2,
     plotly
 Suggests:

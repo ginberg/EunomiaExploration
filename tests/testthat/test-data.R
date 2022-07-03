@@ -1,14 +1,14 @@
 
 test_that("extractPatients", {
 
-  connectionDetails <- getEunomiaConnectionDetails()
-  dbConnection <- connect(connectionDetails)
+  connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+  dbConnection <- DatabaseConnector::connect(connectionDetails)
   df <- extractPatients(dbConnection)
-  disconnect(dbConnection)
+  DatabaseConnector::disconnect(dbConnection)
 
   expect_equal(ncol(df), 5)
   expect_equal(nrow(df), 65332)
-  expect_equal(colnames(df), c("PersonId", "ConditionConceptId", "ConditionName", "ConditionStartDate", "ConditionEndDate"))
+  expect_equal(colnames(df), c("personId", "conditionConceptId", "conditionName", "conditionStartDate", "conditionEndDate"))
 })
 
 test_that("extractPatients invalid input", {

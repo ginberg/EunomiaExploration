@@ -6,16 +6,17 @@
 #'
 #' @param dbConnection A database connection created by DatabaseConnector::connect.
 #'
-#' @importFrom dplyr rename
 #' @importFrom DatabaseConnector querySql
+#' @importFrom dplyr mutate rename
+#' @importFrom lubridate days origin
 #'
 #' @return
 #' A data frame listing patient conditions.
 #'
 #' @examples
-#' connectionDetails <- getEunomiaConnectionDetails()
+#' connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 #'
-#' dbConnection <- connect(connectionDetails)
+#' dbConnection <- DatabaseConnector::connect(connectionDetails)
 #'
 #' extractPatients(dbConnection)
 #'
@@ -27,13 +28,11 @@ extractPatients <- function(dbConnection) {
     stop("Please provide a database connection as input")
   }
 
-  querySql(dbConnection, "SELECT PERSON_ID, CONDITION_CONCEPT_ID, CONCEPT_NAME, CONDITION_START_DATE, CONDITION_END_DATE
-                          FROM CONDITION_OCCURRENCE
-                          LEFT JOIN CONCEPT ON CONDITION_OCCURRENCE.CONDITION_CONCEPT_ID = CONCEPT.CONCEPT_ID")  %>%
-    rename(ConditionConceptId = CONDITION_CONCEPT_ID) %>%
-    rename(ConditionStartDate = CONDITION_START_DATE) %>%
-    rename(ConditionEndDate = CONDITION_END_DATE) %>%
-    rename(PersonId = PERSON_ID) %>%
-    rename(ConditionName = CONCEPT_NAME) %>%
-    mutate(ConditionEndDate = as.Date(ifelse(is.na(ConditionEndDate), ConditionStartDate + days(30), ConditionEndDate), origin))
+  DatabaseConnector::querySql(connection = dbConnection,
+                              sql = "SELECT PERSON_ID, CONDITION_CONCEPT_ID, CONCEPT_NAME, CONDITION_START_DATE, CONDITION_END_DATE
+                                     FROM CONDITION_OCCURRENCE
+                                     LEFT JOIN CONCEPT ON CONDITION_OCCURRENCE.CONDITION_CONCEPT_ID = CONCEPT.CONCEPT_ID",
+                              snakeCaseToCamelCase = TRUE)  %>%
+    dplyr::rename(conditionName = conceptName) %>%
+    dplyr::mutate(conditionEndDate = as.Date(ifelse(is.na(conditionEndDate), conditionStartDate + lubridate::days(30), conditionEndDate), lubridate::origin))
 }

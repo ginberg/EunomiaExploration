@@ -4,7 +4,7 @@
 #' Creates a shiny app to visualize condition data.
 #'
 #' @importFrom Eunomia getEunomiaConnectionDetails
-#' @importFrom DatabaseConnector connect disConnect
+#' @importFrom DatabaseConnector connect disconnect
 #' @importFrom shiny shinyApp selectizeInput checkboxInput plotOutput
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dashboardBody
 #' @importFrom plotly plotlyOutput renderPlotly

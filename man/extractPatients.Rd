@@ -17,9 +17,9 @@ This function will query the Eunomia database and return data regarding patient
 conditions data.
 }
 \examples{
-connectionDetails <- getEunomiaConnectionDetails()
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 
-dbConnection <- connect(connectionDetails)
+dbConnection <- DatabaseConnector::connect(connectionDetails)
 
 extractPatients(dbConnection)
 

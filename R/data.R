@@ -13,15 +13,6 @@
 #' @return
 #' A data frame listing patient conditions.
 #'
-#' @examples
-#' connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-#'
-#' dbConnection <- DatabaseConnector::connect(connectionDetails)
-#'
-#' extractPatients(dbConnection)
-#'
-#' disconnect(dbConnection)
-#'
 #' @export
 extractPatients <- function(dbConnection) {
   if (is.null(dbConnection) || suppressWarnings(is.na(dbConnection)) || class(dbConnection) != "DatabaseConnectorDbiConnection") {

@@ -12,15 +12,6 @@
 #'
 #' @return
 #' A bar plot showing the number of patiens over time, faceted by condition.
-#'
-#' @examples
-#' connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-#'
-#' dbConnection <- DatabaseConnector::connect(connectionDetails)
-#' df <- extractPatients(dbConnection)
-#' DatabaseConnector::disconnect(dbConnection)
-#' plotTrend(df)
-#'
 #' @export
 plotTrend <- function(data, byMonth = FALSE) {
   data <- createPlotData(data = data, byMonth = byMonth)
@@ -60,13 +51,6 @@ plotTrend <- function(data, byMonth = FALSE) {
 #'
 #' @return
 #' A data frame with the plot data.
-#'
-#' @examples
-#' connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-#' dbConnection <- DatabaseConnector::connect(connectionDetails)
-#' df <- extractPatients(dbConnection)
-#' disconnect(dbConnection)
-#' createPlotData(df)
 #'
 createPlotData <- function(data, byMonth = FALSE) {
   if (byMonth) {

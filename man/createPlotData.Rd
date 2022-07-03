@@ -17,11 +17,3 @@ A data frame with the plot data.
 \description{
 Creates the data for the plotTrend function.
 }
-\examples{
-connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-dbConnection <- DatabaseConnector::connect(connectionDetails)
-df <- extractPatients(dbConnection)
-disconnect(dbConnection)
-createPlotData(df)
-
-}

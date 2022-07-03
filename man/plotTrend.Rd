@@ -17,12 +17,3 @@ A bar plot showing the number of patiens over time, faceted by condition.
 \description{
 Creates a bar chart showing the number of patients over time, faceted by condition.
 }
-\examples{
-connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-
-dbConnection <- DatabaseConnector::connect(connectionDetails)
-df <- extractPatients(dbConnection)
-DatabaseConnector::disconnect(dbConnection)
-plotTrend(df)
-
-}

@@ -12,9 +12,6 @@
 #' @return
 #' A bar plot showing the number of patiens over time, faceted by condition.
 #'
-#' @examples
-#' createShinyApp()
-#'
 #' @export
 createShinyApp <- function() {
 

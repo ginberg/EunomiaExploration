@@ -12,7 +12,3 @@ A bar plot showing the number of patiens over time, faceted by condition.
 \description{
 Creates a shiny app to visualize condition data.
 }
-\examples{
-createShinyApp()
-
-}

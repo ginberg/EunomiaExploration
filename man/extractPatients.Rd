@@ -16,13 +16,3 @@ A data frame listing patient conditions.
 This function will query the Eunomia database and return data regarding patient
 conditions data.
 }
-\examples{
-connectionDetails <- Eunomia::getEunomiaConnectionDetails()
-
-dbConnection <- DatabaseConnector::connect(connectionDetails)
-
-extractPatients(dbConnection)
-
-disconnect(dbConnection)
-
-}

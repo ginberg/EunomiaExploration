@@ -28,11 +28,4 @@ test_that("extractPatients invalid input", {
     expect_equal(e$message, error_message)
   })
 
-  tryCatch({
-    extractPatients(mtcars)
-  },
-  error = function(e) {
-    expect_equal(e$message, error_message)
-  })
-
 })

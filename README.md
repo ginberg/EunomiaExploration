@@ -35,4 +35,4 @@ DatabaseConnector::disconnect(dbConnection)
 
 #### Shiny app
 
-![](inst/app.png){#id .class width=25% height=25%}
+![](inst/app.png){width=50% height=50%}
